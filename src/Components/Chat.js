@@ -53,6 +53,15 @@ const Chat = () => {
         }),
       });
 
+      // Check if quota is exceeded (status 429)
+      if (response.status === 429) {
+        setMessages((prev) => [
+          ...prev,
+          { text: 'Limit exceeded, please try again later.', type: 'gpt' },
+        ]);
+        return;
+      }
+
       if (!response.ok) {
         console.error('Error:', response.status, await response.text());
         return;
